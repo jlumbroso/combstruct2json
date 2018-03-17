@@ -1,0 +1,3 @@
+A = Epsilon, B = Atom, %*@# // <= lexer error
+cool123variable = Union(Z, A, B), var = Set(Epsilon), v = Set(A, card =< 123), h =    Cycle(a, 123 => card), 
+V = Set(A, B) /* <= syntax error (set takes only one argument) */
