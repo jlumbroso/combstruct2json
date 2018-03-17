@@ -1,0 +1,9 @@
+A = Set(Z), 
+R = Prod(Cycle(Union(a, b), card <= 3)), 
+a = Atom, b = Epsilon, B = Union(Z, Prod(B,B)), /* this is a c comment
+and it should still be one /* now a double comment! */ /* this is getting out of hand /**/ */ ok enough of that
+*/
+A=Prod(Z,Set(A)), B=Union(Z,Prod(B,B)), // this is a line comment :)
+C=Prod(Z,Sequence(C)), D=Set(Cycle(Z)), F=Set(Set(Z,1=<card)), G=Union(Z,Prod(Z,Set(G,card=3)))
+, H=Union(Z,Set(H,2<=card)), K=Union(Z,Subst(Union(Prod(Z,Z),Prod(Z,Z,Z)),K)), 
+L=PowerSet(Sequence(Z,1<=card))
