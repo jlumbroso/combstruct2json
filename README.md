@@ -1,6 +1,8 @@
 # combstruct2json
 
-Lightweight library to parse `combstruct` grammars, and standalone tool to convert them to json.
+Lightweight library to parse
+[`combstruct` grammars](https://www.maplesoft.com/support/help/maple/view.aspx?path=combstruct),
+and standalone tool to convert them to JSON.
 
 ## Example
 
@@ -39,6 +41,10 @@ $ ./combstruct2json tests/cographs | python -m json.tool | head
                     },
                     ...
 ```
+
+## Acknowledgements
+
+Thanks to Alexandre de Faveri.
 
 ## Bibliography
 
