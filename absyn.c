@@ -4,7 +4,7 @@
 #include <math.h>
 #include "absyn.h"
 
-#define ENOUGH 30 // should be enough to hold constructor names and small expressions
+#define ENOUGH 36 // should be enough to hold constructor names and small expressions
 
 extern NodeST* ST; // Symbol Table with all allocated nodes (for cleanup on parse error)
 
@@ -468,6 +468,304 @@ char* grammarToString(const Grammar* grammar)
   }
 }
 
+/********************************** Json Representations **********************************/
+
+/*
+  Helper function for converting ints to jsons.
+*/
+// FIXME: fix below
+char* intToJson(long long int a)
+{
+  int sign = (a >= 0) ? 1 : -1;
+  long long int abs = a * sign;
+  char* str = (char*) malloc(sizeof(char) * ((int) ceil(log10(abs + 1)) + 2)); // +2: sign and  NULL terminator
+
+  if (sign > 0)
+    sprintf(str, "%lld", abs);
+  else
+    sprintf(str, "-%lld", abs);
+
+  return str;
+}
+
+/*
+  Helper function for getting json representations of restrictions.
+*/
+char* restrictionToJson(Restriction rest, long long limit)
+{
+  // Special case treated separately because it requires no mem allocation.
+  char* str = (char*) malloc(sizeof(char));
+  switch (rest) {
+  case (NONE):
+    sprintf(str, "");
+    return str;
+  default:
+      free(str);
+  }
+  
+  char* val = intToJson(limit); 
+  str = (char*) malloc(sizeof(char) * (strlen(val) + 2*ENOUGH));
+  
+  switch (rest) {
+  case (LESS):
+    sprintf(str, ", \"restriction\": \"card <= %s\"", val);
+    return str;
+  case (EQUAL):
+    sprintf(str, ", \"restriction\": \"card = %s\"", val);
+    return str;
+  case (GREATER):
+    sprintf(str, ", \"restriction\": \"card >= %s\"", val);
+    return str;
+  default:
+    sprintf(str, "\n{ \"error\": \"restriction is invalid!\" }\n");
+    return str;
+  }
+}
+
+/* 
+   Json representation of Units. Always encapsulates json literals in malloc\"ed char arrays.
+*/ 
+// DONE:
+char* unitToJson(const Unit* U)
+{
+  char* str = (char*) malloc(sizeof(char) * ENOUGH);
+
+  switch (U->type) {
+  case (ATOM): 
+    sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Atom\" }");
+    return str;
+  case (EPSILON):
+    sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Epsilon\" }"); 
+    return str;
+  case (Z): 
+    sprintf(str, "{ \"id\": \"Z\" }");
+    return str;
+  default:
+    sprintf(str, "\n{ \"error\": \"Token is not a unit!\" }\n");
+    return str;
+  } 
+}
+
+/*
+  Json representation of Ids. We avoid simply returning A->name to enforce the philosophy that
+  all jsons are owned by this module, so we can (and should) free the returned jsons.
+*/
+// FIXME: fix below
+char* idToJson(const Id* A)
+{
+    char* str = (char*) malloc(sizeof(char) * (strlen(A->name) + 1)); // NULL terminator
+  sprintf(str, "%s", A->name);
+  return str;
+}
+
+/*
+  Json representation of expressions.
+*/
+// DONE:
+char* expressionToJson(const Expression* E)
+{
+  char* str = (char*) malloc(sizeof(char) * ENOUGH);
+
+  // type is single entity
+  switch (E->type) {
+  case (ATOM):
+    sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Atom\" }");
+    return str;
+  case (EPSILON):
+    sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Epsilon\" }");
+    return str;
+  case (Z):
+    sprintf(str, "{ \"id\": \"Z\" }"); // Not sure about this one (FIXME: Make it an alias)
+    return str;
+  case (ID):
+    free(str);
+    Id* id = (Id*) E->component;
+    char *subexp = id->toJson(id);
+    str = (char*) malloc(sizeof(char) * (strlen(subexp) + 13));
+    sprintf(str, "{ \"id\": \"%s\" }", subexp);
+    free(subexp);
+    return str;
+  default: ;
+  }
+
+  // type is constructor, but no restrictions apply
+  // first line after case must be expression  
+  switch (E->type) {
+  case (UNION): ;
+    ExpressionList* elist = (ExpressionList*) E->component;
+    char* subexps = elist->toJson(elist);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
+    sprintf(str, "{ \"op\": \"Union\", \"param\": %s }", subexps);
+    free(subexps);
+    return str;
+  case (PROD): ;
+    elist = (ExpressionList*) E->component;
+    subexps = elist->toJson(elist);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
+    sprintf(str, "{ \"op\": \"Prod\", \"param\": %s }", subexps);
+    free(subexps);
+    return str;
+  case (SUBST): ;
+    elist = (ExpressionList*) E->component;
+    subexps = elist->toJson(elist);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
+    sprintf(str, "{ \"op\": \"Subst\", \"param\": %s }", subexps);
+    free(subexps);
+    return str;
+  default: ;
+  }
+  
+  // type is constructor, restrictions apply
+  // first line after case must be expression
+  switch (E->type) {
+  case (SET): ;
+    Expression* e = (Expression*) E->component;
+    char* rest = restrictionToJson(E->restriction, E->limit);
+    char* subexp = e->toJson(e);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
+    sprintf(str, "{ \"op\": \"Set\", \"param\": [%s]%s }", subexp, rest);
+    free(rest);
+    free(subexp);
+    return str;
+  case (POWERSET): ;
+    e = (Expression*) E->component;
+    rest = restrictionToJson(E->restriction, E->limit);
+    subexp = e->toJson(e);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
+    sprintf(str, "{ \"op\": \"PowerSet\", \"param\": [%s]%s }", subexp, rest);
+    free(rest);  
+    free(subexp); 
+    return str;
+  case (SEQUENCE): ;
+    e = (Expression*) E->component;
+    rest = restrictionToJson(E->restriction, E->limit);
+    subexp = e->toJson(e);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
+    sprintf(str, "{ \"op\": \"Sequence\", \"param\": [%s]%s }", subexp, rest);
+    free(rest);
+    free(subexp);
+    return str;
+  case (CYCLE): ;
+    e = (Expression*) E->component;
+    rest = restrictionToJson(E->restriction, E->limit);
+    subexp = e->toJson(e);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
+    sprintf(str, "{ \"op\": \"Cycle\", \"param\": [%s]%s }", subexp, rest);
+    free(rest);
+    free(subexp);
+    return str;
+  default:
+    sprintf(str, "\nError: token is not an expression!\n");
+    return str;
+  }
+}
+
+
+/*
+  Json representation of lists of expressions.
+*/
+// FIXME: fix below
+char* expressionListToJson(const ExpressionList* Elist)
+{
+  int size = Elist->size;
+  int length = 0;
+  Expression** subexps = Elist->components;
+  char** substrs = (char**) malloc(sizeof(char*) * size);
+  
+  for (int i = 0; i < size; i++) { // get json representation of subexpressions
+    char* substr = subexps[i]->toJson(subexps[i]);
+    substrs[i] = substr;
+    length += strlen(substr);
+  }
+
+  length += 2 * (size - 1) + 1; // for ", " between subexpressions and NULL terminator
+  length += 4; // various Json stuff
+  char* str = (char*) malloc(sizeof(char) * length);
+  sprintf(str, "[ %s", substrs[0]); // there is always a first element
+
+  for (int i = 1; i < size; i++) { // add other elements, separating with comma
+    strcat(str, ", ");
+    strcat(str, substrs[i]);
+    free(substrs[i]);
+  }
+  strcat(str, " ]");
+
+  free(substrs);
+  return str;
+}
+
+// DONE:
+char* statementToJson(const Statement* S)
+{
+  Id* var = S->variable;
+  Expression* exp = S->expression;
+  char* varstr = var->toJson(var);
+  char* expstr = exp->toJson(exp);
+  char* str = (char*) malloc(sizeof(char) * (strlen(varstr) + strlen(expstr) + 5)); // NULL terminator and "\"': "
+  sprintf(str, "\"%s\": %s", varstr, expstr);
+  free(varstr);
+  free(expstr);
+  return str;
+}
+
+// DONE:
+char* statementListToJson(const StatementList* Slist)
+{
+  int size = Slist->size;
+  int length = 0;
+  Statement** substms = Slist->components;
+  char** substrs = (char**) malloc(sizeof(char*) * size);
+  
+  for (int i = 0; i < size; i++) { // get string representation of substatements
+    char* substr = substms[i]->toJson(substms[i]);
+    substrs[i] = substr;
+    length += strlen(substr);
+  }
+  
+  length += 2 * (size - 1) + 1; // for ", " between substatements and NULL terminator
+  length += 4; // various Json stuff
+  char* str = (char*) malloc(sizeof(char) * length);
+  sprintf(str, "{ %s", substrs[0]); // there is always a first element
+  free(substrs[0]);
+  
+  for (int i = 1; i < size; i++) { // add other elements, separating with comma
+    strcat(str, ", ");
+    strcat(str, substrs[i]);
+    free(substrs[i]);
+  }
+  strcat(str, "}\n");
+  
+  free(substrs);
+  return str;
+}
+
+// DONE:
+char* errorToJson(const Error* error)
+{
+  char* line = intToJson(error->line);
+  char* str = (char*) malloc(sizeof(char) * (strlen(error->message) + strlen(line) + 2*ENOUGH));
+  if (error->type == LEXER) {
+      sprintf(str, "{\n  'error': \"%s\",\n  'source': \"lexer\",\n  'line': %s\n}", error->message, line);
+  } else {
+      sprintf(str, "{\n  'error': \"%s\",\n  'source': \"parser\",\n  'line': %s\n}", error->message, line);
+  }
+
+  free(line);
+  return str;
+}
+
+// DONE:
+char* grammarToJson(const Grammar* grammar)
+{
+  if (grammar->type == ISERROR) {
+    Error* E = (Error*) grammar->component;
+    return E->toJson(E);
+  } else {
+    StatementList* Slist = (StatementList*) grammar->component;
+    return Slist->toJson(Slist);
+  }
+}
+
 /********************************** Constructors **********************************/
 
 Unit* newUnit(enum yytokentype type)
@@ -475,6 +773,7 @@ Unit* newUnit(enum yytokentype type)
   Unit* U = malloc(sizeof(Unit));
   U->type = type;
   U->toString = &unitToString;
+  U->toJson = &unitToJson;
   U->key = addNode(U, UNIT_N, ST); 
   return U;
 }
@@ -486,6 +785,7 @@ Id* newId(char* name)
   sprintf(str, "%s", name);
   A->name = str;
   A->toString = &idToString;
+  A->toJson = &idToJson;
   A->key = addNode(A, ID_N, ST); 
   return A;
 }
@@ -498,6 +798,7 @@ Expression* newExpression(void* component, enum yytokentype type, Restriction re
   E->restriction = restriction;
   E->limit = limit;
   E->toString = &expressionToString;
+  E->toJson = &expressionToJson;
   E->key = addNode(E, EXP_N, ST);
   return E;
 }
@@ -511,6 +812,7 @@ ExpressionList* newExpressionList(Expression* expression)
   Elist->size = 1;
   Elist->space = 1;
   Elist->toString = &expressionListToString;
+  Elist->toJson = &expressionListToJson;
   Elist->key = addNode(Elist, EXPLIST_N, ST);
   return Elist;
 }
@@ -521,6 +823,7 @@ Statement* newStatement(Id* variable, Expression* expression)
   S->variable = variable;
   S->expression = expression;
   S->toString = &statementToString;
+  S->toJson = &statementToJson;
   S->key = addNode(S, STMT_N, ST);
   return S;
 }
@@ -534,6 +837,7 @@ StatementList* newStatementList(Statement* statement)
   Slist->size = 1;
   Slist->space = 1;
   Slist->toString = &statementListToString;
+  Slist->toJson = &statementListToJson;
   Slist->key = addNode(Slist, STMTLIST_N, ST);
   return Slist;
 }
@@ -547,6 +851,7 @@ Error* newError(int line, char* message, ErrorType type)
   E->line = line;
   E->type = type;
   E->toString = &errorToString;
+  E->toJson = &errorToJson;
   E->key = addNode(E, ERROR_N, ST);
   return E;
 }
@@ -557,6 +862,7 @@ Grammar* newGrammar(void* component, GrammarType type)
   G->component = component;
   G->type = type;
   G->toString = &grammarToString;
+  G->toJson = &grammarToJson;
   G->key = addNode(G, GRAMMAR_N, ST);
   return G;
 }

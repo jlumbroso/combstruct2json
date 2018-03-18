@@ -36,6 +36,7 @@ struct Unit_s
   enum yytokentype type;
   key_t key;
   char* (*toString)(const struct Unit_s* self);
+  char* (*toJson)(const struct Unit_s* self);
 };
 
 /*
@@ -46,6 +47,7 @@ struct Id_s
   char* name;
   key_t key;
   char* (*toString)(const struct Id_s* self);
+  char* (*toJson)(const struct Id_s* self);
 };
 
 /* 
@@ -62,6 +64,7 @@ struct Expression_s
   long long int limit; // numerical value of restriction in cardinality
   key_t key;
   char* (*toString)(const struct Expression_s* self);
+  char* (*toJson)(const struct Expression_s* self);
 };
 
 /*
@@ -74,6 +77,7 @@ struct ExpressionList_s
   int space; // maximum number of expressions that can be put in the current list
   key_t key;
   char* (*toString)(const struct ExpressionList_s* self);
+  char* (*toJson)(const struct ExpressionList_s* self);
 };
 
 /*
@@ -86,6 +90,7 @@ struct Statement_s
   Expression* expression;
   key_t key;
   char* (*toString)(const struct Statement_s* self);
+  char* (*toJson)(const struct Statement_s* self);
 };
 
 /*
@@ -98,6 +103,7 @@ struct StatementList_s
   int space; // maximum number of statements that can be put in the current list
   key_t key;
   char* (*toString)(const struct StatementList_s* self);
+  char* (*toJson)(const struct StatementList_s* self);
 };
 
 /*
@@ -110,6 +116,7 @@ struct Error_s
   ErrorType type;
   key_t key;
   char* (*toString)(const struct Error_s* self);
+  char* (*toJson)(const struct Error_s* self);
 };
 
 /*
@@ -121,6 +128,7 @@ struct Grammar_s
   void* component; // can be Error or StatementList
   key_t key;
   char* (*toString)(const struct Grammar_s* self);
+  char* (*toJson)(const struct Grammar_s* self);
 };
 
 /********************************** Constructors **********************************/

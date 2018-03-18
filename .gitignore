@@ -1,3 +1,11 @@
+# Temporary files
+lex.yy.c
+parser.tab.c
+parser.tab.h
+
+# Binary
+readgrammar
+
 # Prerequisites
 *.d
 

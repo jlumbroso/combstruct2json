@@ -161,6 +161,6 @@ int main(int argc, char* argv[])
 {
   readGrammar(argv[1]);
   
-  printf("%s\n", root->toString(root));
+  printf("%s\n", root->toJson(root));
 }
 
