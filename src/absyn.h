@@ -18,7 +18,7 @@ typedef struct StatementList_s StatementList;
 typedef struct Error_s Error;
 typedef struct Grammar_s Grammar;
 
-#include "parser.tab.h"
+#include "../parser.tab.h"
 
 typedef enum {NONE, LESS, EQUAL, GREATER} Restriction; // restrictions to cardinality
 

@@ -3,7 +3,7 @@
 */
 
 %{
-#include "absyn.h"
+#include "src/absyn.h"
 #define TOKEN(t) (yylval.symbol = t)
 #define UNIT(t) (yylval.unit = newUnit(t))
 int lineNumber = 1;

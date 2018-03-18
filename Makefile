@@ -2,20 +2,20 @@ LEX = flex
 YACC = bison -d # flag is needed to produce parser.tab.h
 CC = gcc
 
-exec: parser.tab.c parser.tab.h lex.yy.c absyn.c node.c
-	$(CC) -o combstruct2json parser.tab.c lex.yy.c absyn.c node.c
+exec: parser.tab.c parser.tab.h lex.yy.c src/absyn.c src/node.c
+	$(CC) -o combstruct2json parser.tab.c lex.yy.c src/absyn.c src/node.c
 
-parser.tab.c parser.tab.h: parser.y
-	$(YACC) parser.y
+parser.tab.c src/parser.tab.h: src/parser.y
+	$(YACC) src/parser.y
 
-lex.yy.c: lexer.l
-	$(LEX) lexer.l
+lex.yy.c: src/lexer.l
+	$(LEX) src/lexer.l
 
-absyn.c: absyn.h
+src/absyn.c: src/absyn.h
 
-absyn.h: parser.tab.h
+src/absyn.h: src/parser.tab.h
 
-node.c: node.h
+src/node.c: src/node.h
 
 clean:
 	rm -f lex.yy.c parser.tab.h parser.tab.c combstruct2json *~ *\#

@@ -5,7 +5,7 @@
 %{
 #include <stdio.h>
 #include <string.h>
-#include "absyn.h"
+#include "src/absyn.h"
 
 Grammar* root; /* root of abstract syntax tree */
 NodeST* ST; /* Symbol table with allocated nodes (for cleanup on parse error) */
