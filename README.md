@@ -23,6 +23,23 @@ $ ./combstruct tests/cographs
 { "G": { "op": "Set", "param": [{ "id": "Co" }] }, "Co": { "op": "Union", "param": [ { "id": "Ge" }, { "id": "Gc" }, { "id": "v" }, { "op": "Prod", "param": [ { "id": "v" }, { "id": "v" } ] } ] }, "Ge": { "op": "Union", "param": [ { "op": "Set", "param": [{ "id": "Sc" }], "restriction": "card = 2" }, { "op": "Prod", "param": [ { "id": "Sc" }, { "id": "v" } ] } ] }, "Gc": { "op": "Set", "param": [{ "op": "Union", "param": [ { "id": "v" }, { "id": "Sc" } ] }], "restriction": "card >= 3" }, "Sc": { "op": "Set", "param": [{ "op": "Union", "param": [ { "id": "v" }, { "id": "C" } ] }], "restriction": "card >= 2" }, "C": { "op": "Set", "param": [{ "op": "Union", "param": [ { "id": "v" }, { "id": "Sc" } ] }], "restriction": "card >= 2" }, "v": { "type": "unit", "unit": "Atom" }}
 ```
 
+which can be prettified, for instance, using Python, for better legibility:
+
+```bash
+$ ./combstruct2json tests/cographs | python -m json.tool | head
+{
+    "C": {
+        "op": "Set",
+        "param": [
+            {
+                "op": "Union",
+                "param": [
+                    {
+                        "id": "v"
+                    },
+                    ...
+```
+
 ## Bibliography
 
 Philippe Flajolet, Paul Zimmermann and  Bernard van Cutsem. [*A calculus for the random generation of combinatorial structures.*](http://algo.inria.fr/flajolet/Publications/RR-1830.pdf) 29 pages. Theoretical Computer Science, vol. 132 (1-2), pp. 1-35, 1994.
