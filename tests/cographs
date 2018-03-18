@@ -1,0 +1,7 @@
+G  = Set(Co),
+Co = Union(Ge, Gc, v, Prod(v,v)),
+Ge = Union(Set(Sc, card=2), Prod(Sc,v)),
+Gc = Set(Union(v, Sc), card>=3),
+Sc = Set(Union(v, C), card>=2),
+C  = Set(Union(v, Sc), card>=2),
+v  = Atom

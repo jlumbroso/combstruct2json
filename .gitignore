@@ -2,9 +2,15 @@
 lex.yy.c
 parser.tab.c
 parser.tab.h
+*~
 
 # Binary
 readgrammar
+combstruct2json
+exec
+
+# macOS metadata
+.DS_Store
 
 # Prerequisites
 *.d

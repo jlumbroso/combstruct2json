@@ -3,7 +3,7 @@ YACC = bison -d # flag is needed to produce parser.tab.h
 CC = gcc
 
 exec: parser.tab.c parser.tab.h lex.yy.c absyn.c node.c
-	$(CC) -o readgrammar parser.tab.c lex.yy.c absyn.c node.c
+	$(CC) -o combstruct2json parser.tab.c lex.yy.c absyn.c node.c
 
 parser.tab.c parser.tab.h: parser.y
 	$(YACC) parser.y
