@@ -18,4 +18,4 @@ absyn.h: parser.tab.h
 node.c: node.h
 
 clean:
-	rm -f lex.yy.c parser.tab.h parser.tab.c readgrammar *~ *\#
+	rm -f lex.yy.c parser.tab.h parser.tab.c combstruct2json *~ *\#
