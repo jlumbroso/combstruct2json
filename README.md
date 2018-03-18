@@ -42,6 +42,15 @@ $ ./combstruct2json tests/cographs | python -m json.tool | head
                     ...
 ```
 
+## Installation
+
+1. You may need to install `flex` and `bison`, if you don't already have them.
+
+2. Run `make` to create the executable `combstruct2json`.
+
+3. Run `./combstruct2json <filename>` to print the parsed JSON output, from the
+   grammar contained in the given file.
+
 ## Acknowledgements
 
 Thanks to Alexandre de Faveri.

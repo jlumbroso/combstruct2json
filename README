@@ -1,12 +1,3 @@
-Steps to test parser:
-
-1- You may need to install flex and bison, if you don’t already have them.
-
-2- Run "make" to create the executable "readgrammar".
-
-3- Run "./readgrammar <filename>" to print the parsed grammar from the given file
-to standard out (should be about the same as the input).
-
 *----------------------------------------------------------------------*
 
 Description of files:
