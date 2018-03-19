@@ -31,25 +31,25 @@ NUMBER	[0-9]+
 "Cycle"				{ return TOKEN(CYCLE); }
 "Subst"				{ return TOKEN(SUBST); }
 "card"				{ return TOKEN(CARD); }
-"Z"			        { UNIT(Z); return Z; }
+"Z"					{ UNIT(Z); return Z; }
 {ID}				{ yylval.id = newId(yytext); return ID; }
 {NUMBER}			{ yylval.number = atoi(yytext); return NUMBER; }
-"("			        { return TOKEN(LPAR); }
-")"				{ return TOKEN(RPAR); }
-","				{ return TOKEN(COMMA); }
+"("					{ return TOKEN(LPAR); }
+")"					{ return TOKEN(RPAR); }
+","					{ return TOKEN(COMMA); }
 "<="|"=<"			{ return TOKEN(LEQ); }
 ">="|"=>"			{ return TOKEN(GEQ); }
-"="				{ return TOKEN(EQ); }
+"="					{ return TOKEN(EQ); }
 "\n"       			{ lineNumber++; }
 " "|"\t"   			{ /* empty */ }
-"/*"            	        { commentLevel++; BEGIN(C_COMMENT); }
-<C_COMMENT>"/*" 	        { commentLevel++; }
-<C_COMMENT>"*/" 	        { commentLevel--; if (commentLevel == 0) BEGIN(INITIAL); }
-<C_COMMENT>"\n"   	        { /* empty */ }
-<C_COMMENT>.    	        { /* empty */ }
+"/*"            	{ commentLevel++; BEGIN(C_COMMENT); }
+<C_COMMENT>"/*" 	{ commentLevel++; }
+<C_COMMENT>"*/" 	{ commentLevel--; if (commentLevel == 0) BEGIN(INITIAL); }
+<C_COMMENT>"\n"   	{ /* empty */ }
+<C_COMMENT>.    	{ /* empty */ }
 "//"				{ BEGIN(LINE_COMMENT); }
-<LINE_COMMENT>"\n"	        { BEGIN(INITIAL); }
-<LINE_COMMENT>.		        { /* empty */ }
+<LINE_COMMENT>"\n"	{ BEGIN(INITIAL); }
+<LINE_COMMENT>.		{ /* empty */ }
 .          			{ reportError(newError(lineNumber, yytext, LEXER)); }
 
 %%
