@@ -120,7 +120,7 @@ struct Error_s
 };
 
 /*
-  Root of the abstract syntax tree, can be an error or a list of statement.
+  Root of the abstract syntax tree, can be an error or a list of statements.
 */
 struct Grammar_s
 {

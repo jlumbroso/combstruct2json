@@ -137,7 +137,7 @@ Grammar* readGrammar(char* filename)
   yyparse();
   fclose(yyin);
 
-  if (root->type == ISERROR) { // need to clean up
+  if (root->type == ISERROR) { // we need to clean up
   	// copy error info
   	Error* error = (Error*) root->component;
   	int line = error->line;
@@ -145,13 +145,14 @@ Grammar* readGrammar(char* filename)
   	char* str = (char*) malloc(sizeof(char) * (strlen(error->message) + 1));
   	sprintf(str, "%s", error->message);
 
-  	// destroy all nodes (including root!)
+  	// free all nodes (including root) and their contents, and remove them from ST
   	cleanup(ST);
 
+	// set root to error
   	root = newGrammar(newError(line, str, type), ISERROR);
   }
 
-  // destroy ST (but not tree nodes)
+  // free ST (but not abstract syntax tree nodes) since it is not needed anymore
   free(ST);
 
   return root;
