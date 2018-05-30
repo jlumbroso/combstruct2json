@@ -45,7 +45,7 @@ StatementList* addStatementToList(Statement* statement, StatementList* list)
 }
 
 /*
-  Helper function that converts toke types to the corresponding node types.
+  Helper function that converts token types to the corresponding node types.
 */
 NodeType tokenToNode(enum yytokentype t)
 {
@@ -523,7 +523,7 @@ char* restrictionToJson(Restriction rest, long long limit)
 }
 
 /* 
-   Json representation of Units. Always encapsulates json literals in malloc\"ed char arrays.
+   Json representation of Units. Always encapsulates json literals in malloc'ed char arrays.
 */ 
 // DONE:
 char* unitToJson(const Unit* U)
