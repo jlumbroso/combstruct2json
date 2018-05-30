@@ -17,5 +17,8 @@ src/absyn.h: src/parser.tab.h
 
 src/node.c: src/node.h
 
+
+all: exec
+
 clean:
 	rm -f lex.yy.c parser.tab.h parser.tab.c combstruct2json *~ *\#
