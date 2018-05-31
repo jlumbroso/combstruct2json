@@ -158,10 +158,11 @@ Grammar* readGrammar(char* filename)
   return root;
 }
 
+#ifndef _COMPILE_LIB
 int main(int argc, char* argv[])
 {
   readGrammar(argv[1]);
   
   printf("%s\n", root->toJson(root));
 }
-
+#endif
