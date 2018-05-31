@@ -12,6 +12,9 @@ exec
 # macOS metadata
 .DS_Store
 
+# Editor metadata
+.vscode
+
 # Prerequisites
 *.d
 
