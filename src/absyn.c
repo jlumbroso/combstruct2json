@@ -538,10 +538,10 @@ char* unitToJson(const Unit* U)
     sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Epsilon\" }"); 
     return str;
   case (Z): 
-    sprintf(str, "{ \"type\": \"id\", \"id\": \"Z\" }"); /* FIXME: make this an alias? */
+    sprintf(str, "{ \"id\": \"Z\" }");
     return str;
   default:
-    sprintf(str, "\n{ \"type\": \"error\", \"msg\": \"Token is not a unit!\" }\n");
+    sprintf(str, "\n{ \"error\": \"Token is not a unit!\" }\n");
     return str;
   } 
 }
@@ -575,14 +575,14 @@ char* expressionToJson(const Expression* E)
     sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Epsilon\" }");
     return str;
   case (Z):
-    sprintf(str, "{ \"type\": \"id\", \"id\": \"Z\" }"); // Not sure about this one (FIXME: Make it an alias)
+    sprintf(str, "{ \"id\": \"Z\" }"); // Not sure about this one (FIXME: Make it an alias)
     return str;
   case (ID):
     free(str);
     Id* id = (Id*) E->component;
     char *subexp = id->toJson(id);
     str = (char*) malloc(sizeof(char) * (strlen(subexp) + 13));
-    sprintf(str, "{ \"type\": \"id\", \"id\": \"%s\" }", subexp);
+    sprintf(str, "{ \"id\": \"%s\" }", subexp);
     free(subexp);
     return str;
   default: ;
@@ -595,21 +595,21 @@ char* expressionToJson(const Expression* E)
     ExpressionList* elist = (ExpressionList*) E->component;
     char* subexps = elist->toJson(elist);
     str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
-    sprintf(str, "{ \"type\": \"op\", \"op\": \"Union\", \"param\": %s }", subexps);
+    sprintf(str, "{ \"op\": \"Union\", \"param\": %s }", subexps);
     free(subexps);
     return str;
   case (PROD): ;
     elist = (ExpressionList*) E->component;
     subexps = elist->toJson(elist);
     str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
-    sprintf(str, "{ \"type\": \"op\", \"op\": \"Prod\", \"param\": %s }", subexps);
+    sprintf(str, "{ \"op\": \"Prod\", \"param\": %s }", subexps);
     free(subexps);
     return str;
   case (SUBST): ;
     elist = (ExpressionList*) E->component;
     subexps = elist->toJson(elist);
     str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
-    sprintf(str, "{ \"type\": \"op\", \"op\": \"Subst\", \"param\": %s }", subexps);
+    sprintf(str, "{ \"op\": \"Subst\", \"param\": %s }", subexps);
     free(subexps);
     return str;
   default: ;
@@ -623,7 +623,7 @@ char* expressionToJson(const Expression* E)
     char* rest = restrictionToJson(E->restriction, E->limit);
     char* subexp = e->toJson(e);
     str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
-    sprintf(str, "{ \"type\": \"op\", \"op\": \"Set\", \"param\": [%s]%s }", subexp, rest);
+    sprintf(str, "{ \"op\": \"Set\", \"param\": [%s]%s }", subexp, rest);
     free(rest);
     free(subexp);
     return str;
@@ -632,7 +632,7 @@ char* expressionToJson(const Expression* E)
     rest = restrictionToJson(E->restriction, E->limit);
     subexp = e->toJson(e);
     str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
-    sprintf(str, "{ \"type\": \"op\", \"op\": \"PowerSet\", \"param\": [%s]%s }", subexp, rest);
+    sprintf(str, "{ \"op\": \"PowerSet\", \"param\": [%s]%s }", subexp, rest);
     free(rest);  
     free(subexp); 
     return str;
@@ -641,7 +641,7 @@ char* expressionToJson(const Expression* E)
     rest = restrictionToJson(E->restriction, E->limit);
     subexp = e->toJson(e);
     str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
-    sprintf(str, "{ \"type\": \"op\", \"op\": \"Sequence\", \"param\": [%s]%s }", subexp, rest);
+    sprintf(str, "{ \"op\": \"Sequence\", \"param\": [%s]%s }", subexp, rest);
     free(rest);
     free(subexp);
     return str;
@@ -650,12 +650,12 @@ char* expressionToJson(const Expression* E)
     rest = restrictionToJson(E->restriction, E->limit);
     subexp = e->toJson(e);
     str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
-    sprintf(str, "{ \"type\": \"op\", \"op\": \"Cycle\", \"param\": [%s]%s }", subexp, rest);
+    sprintf(str, "{ \"op\": \"Cycle\", \"param\": [%s]%s }", subexp, rest);
     free(rest);
     free(subexp);
     return str;
   default:
-    sprintf(str, "{ \"type\": \"error\",\n  \"msg\": \"Error: token is not an expression!\" }\n");
+    sprintf(str, "\nError: token is not an expression!\n");
     return str;
   }
 }
