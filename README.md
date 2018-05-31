@@ -22,7 +22,7 @@ would then produce the following JSON output:
 ```bash
 $ make
 $ ./combstruct2json tests/cographs
-{ "G": { "op": "Set", "param": [{ "id": "Co" }] }, "Co": { "op": "Union", "param": [ { "id": "Ge" }, { "id": "Gc" }, { "id": "v" }, { "op": "Prod", "param": [ { "id": "v" }, { "id": "v" } ] } ] }, "Ge": { "op": "Union", "param": [ { "op": "Set", "param": [{ "id": "Sc" }], "restriction": "card = 2" }, { "op": "Prod", "param": [ { "id": "Sc" }, { "id": "v" } ] } ] }, "Gc": { "op": "Set", "param": [{ "op": "Union", "param": [ { "id": "v" }, { "id": "Sc" } ] }], "restriction": "card >= 3" }, "Sc": { "op": "Set", "param": [{ "op": "Union", "param": [ { "id": "v" }, { "id": "C" } ] }], "restriction": "card >= 2" }, "C": { "op": "Set", "param": [{ "op": "Union", "param": [ { "id": "v" }, { "id": "Sc" } ] }], "restriction": "card >= 2" }, "v": { "type": "unit", "unit": "Atom" }}
+{ "G": { "type": "op", "op": "Set", "param": [{ "type": "id", "id": "Co" }] }, "Co": { "type": "op", "op": "Union", "param": [ { "type": "id", "id": "Ge" }, { "type": "id", "id":"Gc" }, { "type": "id", "id": "v" }, { "type": "op", "op": "Prod", "param": [ { "type": "id", "id": "v" }, { "type": "id", "id": "v" } ] } ] }, "Ge": { "type": "op", "op": "Union", "param": [ { "type": "op", "op": "Set", "param": [{ "type": "id", "id": "Sc" }], "restriction": "card = 2" }, { "type": "op", "op": "Prod", "param": [ { "type": "id", "id": "Sc" }, { "type": "id", "id": "v" } ] } ] }, "Gc": { "type": "op", "op": "Set", "param": [{ "type": "op", "op": "Union", "param": [ { "type": "id", "id": "v" }, { "type": "id", "id":"Sc" } ] }], "restriction": "card >= 3" }, "Sc": { "type": "op", "op": "Set", "param": [{ "type": "op", "op": "Union", "param": [ { "type": "id", "id": "v" }, { "type": "id", "id": "C" } ] }], "restriction": "card >= 2" }, "C": { "type": "op", "op": "Set", "param": [{ "type": "op", "op": "Union", "param": [ { "type": "id", "id": "v" }, { "type": "id", "id": "Sc" } ] }], "restriction": "card >= 2" }, "v": { "type": "unit", "unit": "Atom" }}
 ```
 
 which can be prettified, for instance, using Python, for better legibility:
@@ -37,8 +37,8 @@ $ ./combstruct2json tests/cographs | python -m json.tool | head
                 "op": "Union",
                 "param": [
                     {
-                        "id": "v"
-                    },
+                        "id": "v",
+                        "type": "id"
                     ...
 ```
 
@@ -46,10 +46,57 @@ $ ./combstruct2json tests/cographs | python -m json.tool | head
 
 1. You may need to install `flex` and `bison`, if you don't already have them.
 
-2. Run `make` to create the executable `combstruct2json`.
+2. Run `make all` to create the executable `combstruct2json`.
 
 3. Run `./combstruct2json <filename>` to print the parsed JSON output, from the
    grammar contained in the given file.
+
+## Draft specification of JSON output
+
+Because one purpose to enable easier interoperability with existing work using
+symbolic specifications in Maple, this library uses
+[Maple's specification](https://www.maplesoft.com/support/help/maple/view.aspx?path=combstruct)
+for `combstruct` grammars as a starting point.
+
+The output is a JSON string which represents a dictionary mapping symbol names
+to an abstract syntax tree. Each node of the grammar is represented by a node
+in the JSON tree:
+
+- For unit elements (with or without a weight), the `type` is `unit`; the
+  available field is `unit` to describe the type of element (an atom, or epsilon). Example:
+
+  ```
+  { "type": "unit", "unit": "Epsilon" }
+  ```
+
+- For variable references, the `type` is `id`; the available field is `id` which
+  should specify the name of the variable that is being referenced.
+  Example:
+
+  ```
+  { "type": "id", "id": "v" }
+  ```
+
+- For operators, the `type` is `op`; the available fields are `op` which describes
+  which operator is applied (from `Union`, `Prod`, `Sequence`, `Set`, etc.),
+  `param` which would be a list of parameters on which the operator is applied, and `restriction` which optionally encodes a restriction (for the moment, this is
+  limited to cardinality restrictions). Example:
+
+  ```
+  {
+    "type": "op",
+    "op": "Union",
+    "params": [
+        { "type": "id", "id": "v" },
+        { "type": "id", "id": "Sc" }
+        ],
+    "restriction": "card >= 2"
+  }
+  ```
+
+This draft specification is designed to produce an easy to parse JSON grammar format
+specification to improve communication between various tools of a planned analytic
+combinatorics toolchain.
 
 ## Acknowledgements
 
