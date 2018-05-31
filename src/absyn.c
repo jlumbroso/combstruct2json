@@ -528,21 +528,25 @@ char* restrictionToJson(Restriction rest, long long limit)
 // DONE:
 char* unitToJson(const Unit* U)
 {
+  /* NOTE: This is how you would dynamically allocate these strings:
+
   char* str = (char*) malloc(sizeof(char) * ENOUGH);
+  sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Atom\" }");
+  return str;
+
+  But since these are literals we can also just return them, they
+  are guaranteed to be located in some valid memory address.
+  ******************************************************************/
 
   switch (U->type) {
-  case (ATOM): 
-    sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Atom\" }");
-    return str;
+  case (ATOM):
+    return strdup("{ \"type\": \"unit\", \"unit\": \"Atom\" }");
   case (EPSILON):
-    sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Epsilon\" }"); 
-    return str;
-  case (Z): 
-    sprintf(str, "{ \"id\": \"Z\" }");
-    return str;
+    return strdup("{ \"type\": \"unit\", \"unit\": \"Epsilon\" }");
+  case (Z):
+    return strdup("{ \"id\": \"Z\" }");
   default:
-    sprintf(str, "\n{ \"error\": \"Token is not a unit!\" }\n");
-    return str;
+    return strdup("\n{ \"error\": \"Token is not a unit!\" }\n");
   } 
 }
 
@@ -564,29 +568,31 @@ char* idToJson(const Id* A)
 // DONE:
 char* expressionToJson(const Expression* E)
 {
-  char* str = (char*) malloc(sizeof(char) * ENOUGH);
+  
 
   // type is single entity
   switch (E->type) {
   case (ATOM):
-    sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Atom\" }");
-    return str;
+    //sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Atom\" }");
+    return strdup("{ \"type\": \"unit\", \"unit\": \"Atom\" }");
   case (EPSILON):
-    sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Epsilon\" }");
-    return str;
+    //sprintf(str, "{ \"type\": \"unit\", \"unit\": \"Epsilon\" }");
+    return strdup("{ \"type\": \"unit\", \"unit\": \"Epsilon\" }");
   case (Z):
-    sprintf(str, "{ \"id\": \"Z\" }"); // Not sure about this one (FIXME: Make it an alias)
-    return str;
-  case (ID):
-    free(str);
+    //sprintf(str, "{ \"id\": \"Z\" }"); // Not sure about this one (FIXME: Make it an alias)
+    return strdup("{ \"id\": \"Z\" }");
+  case (ID): ;
+    //free(str);
     Id* id = (Id*) E->component;
     char *subexp = id->toJson(id);
-    str = (char*) malloc(sizeof(char) * (strlen(subexp) + 13));
+    char *str = (char*) malloc(sizeof(char) * (strlen(subexp) + 13));
     sprintf(str, "{ \"id\": \"%s\" }", subexp);
     free(subexp);
     return str;
   default: ;
   }
+
+  char* str = (char*) malloc(sizeof(char) * ENOUGH);
 
   // type is constructor, but no restrictions apply
   // first line after case must be expression  
