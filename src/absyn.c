@@ -470,6 +470,8 @@ char* grammarToString(const Grammar* grammar)
 
 /********************************** Json Representations **********************************/
 
+#define MAKE_JSON_ERROR(msg) (strdup("{\n  \"type\": \"error\",\n  \"source\": \"json-export\",\n  \"msg\": \"" msg "\"\n}"))
+
 /*
   Helper function for converting ints to jsons.
 */
@@ -517,8 +519,8 @@ char* restrictionToJson(Restriction rest, long long limit)
     sprintf(str, ", \"restriction\": \"card >= %s\"", val);
     return str;
   default:
-    sprintf(str, "\n{ \"error\": \"restriction is invalid!\" }\n");
-    return str;
+    //sprintf(str, "\n{ \"error\": \"restriction is invalid!\" }\n");
+    return MAKE_JSON_ERROR("restriction is invalid.");
   }
 }
 
@@ -544,9 +546,10 @@ char* unitToJson(const Unit* U)
   case (EPSILON):
     return strdup("{ \"type\": \"unit\", \"unit\": \"Epsilon\" }");
   case (Z):
-    return strdup("{ \"id\": \"Z\" }");
+    return strdup("{ \"type\": \"id\", \"id\": \"Z\" }");
   default:
-    return strdup("\n{ \"error\": \"Token is not a unit!\" }\n");
+    //return strdup("\n{ \"error\": \"Token is not a unit!\" }\n");
+    return MAKE_JSON_ERROR("Token is not a unit.");
   } 
 }
 
@@ -580,13 +583,13 @@ char* expressionToJson(const Expression* E)
     return strdup("{ \"type\": \"unit\", \"unit\": \"Epsilon\" }");
   case (Z):
     //sprintf(str, "{ \"id\": \"Z\" }"); // Not sure about this one (FIXME: Make it an alias)
-    return strdup("{ \"id\": \"Z\" }");
+    return strdup("{ \"type\": \"id\", \"id\": \"Z\" }");
   case (ID): ;
     //free(str);
     Id* id = (Id*) E->component;
     char *subexp = id->toJson(id);
-    char *str = (char*) malloc(sizeof(char) * (strlen(subexp) + 13));
-    sprintf(str, "{ \"id\": \"%s\" }", subexp);
+    char *str = (char*) malloc(sizeof(char) * (strlen(subexp) + 29)); // + 13
+    sprintf(str, "{ \"type\": \"id\", \"id\": \"%s\" }", subexp);
     free(subexp);
     return str;
   default: ;
@@ -598,24 +601,27 @@ char* expressionToJson(const Expression* E)
   // first line after case must be expression  
   switch (E->type) {
   case (UNION): ;
+    #define JSONPATT_UNION "{ \"type\": \"op\", \"op\": \"Union\", \"param\": %s }"
     ExpressionList* elist = (ExpressionList*) E->component;
     char* subexps = elist->toJson(elist);
-    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
-    sprintf(str, "{ \"op\": \"Union\", \"param\": %s }", subexps);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + strlen(JSONPATT_UNION) + 1));
+    sprintf(str, JSONPATT_UNION, subexps);
     free(subexps);
     return str;
   case (PROD): ;
+    #define JSONPATT_PROD "{ \"type\": \"op\", \"op\": \"Prod\", \"param\": %s }"
     elist = (ExpressionList*) E->component;
     subexps = elist->toJson(elist);
-    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
-    sprintf(str, "{ \"op\": \"Prod\", \"param\": %s }", subexps);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + strlen(JSONPATT_PROD) + 1));
+    sprintf(str, JSONPATT_PROD, subexps);
     free(subexps);
     return str;
   case (SUBST): ;
+    #define JSONPATT_SUBST "{ \"type\": \"op\", \"op\": \"Subst\", \"param\": %s }"
     elist = (ExpressionList*) E->component;
     subexps = elist->toJson(elist);
-    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + ENOUGH));
-    sprintf(str, "{ \"op\": \"Subst\", \"param\": %s }", subexps);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexps) + strlen(JSONPATT_SUBST) + 1));
+    sprintf(str, JSONPATT_SUBST, subexps);
     free(subexps);
     return str;
   default: ;
@@ -625,44 +631,49 @@ char* expressionToJson(const Expression* E)
   // first line after case must be expression
   switch (E->type) {
   case (SET): ;
+    #define JSONPATT_SET "{ \"type\": \"op\", \"op\": \"Set\", \"param\": [%s]%s }"
     Expression* e = (Expression*) E->component;
     char* rest = restrictionToJson(E->restriction, E->limit);
     char* subexp = e->toJson(e);
-    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
-    sprintf(str, "{ \"op\": \"Set\", \"param\": [%s]%s }", subexp, rest);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + strlen(JSONPATT_SET) + 1));
+    sprintf(str, JSONPATT_SET, subexp, rest);
     free(rest);
     free(subexp);
     return str;
   case (POWERSET): ;
+    #define JSONPATT_POWERSET "{ \"type\": \"op\", \"op\": \"PowerSet\", \"param\": [%s]%s }"
     e = (Expression*) E->component;
     rest = restrictionToJson(E->restriction, E->limit);
     subexp = e->toJson(e);
-    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
-    sprintf(str, "{ \"op\": \"PowerSet\", \"param\": [%s]%s }", subexp, rest);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + strlen(JSONPATT_POWERSET) + 1));
+    sprintf(str, JSONPATT_POWERSET, subexp, rest);
     free(rest);  
     free(subexp); 
     return str;
   case (SEQUENCE): ;
+    #define JSONPATT_SEQUENCE "{ \"type\": \"op\", \"op\": \"Sequence\", \"param\": [%s]%s }"
     e = (Expression*) E->component;
     rest = restrictionToJson(E->restriction, E->limit);
     subexp = e->toJson(e);
-    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
-    sprintf(str, "{ \"op\": \"Sequence\", \"param\": [%s]%s }", subexp, rest);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + strlen(JSONPATT_SEQUENCE) + 1));
+    sprintf(str, JSONPATT_SEQUENCE, subexp, rest);
     free(rest);
     free(subexp);
     return str;
   case (CYCLE): ;
+    #define JSONPATT_CYCLE "{ \"type\": \"op\", \"op\": \"Cycle\", \"param\": [%s]%s }"
     e = (Expression*) E->component;
     rest = restrictionToJson(E->restriction, E->limit);
     subexp = e->toJson(e);
-    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + ENOUGH));
-    sprintf(str, "{ \"op\": \"Cycle\", \"param\": [%s]%s }", subexp, rest);
+    str = (char*) realloc(str, sizeof(char) * (strlen(subexp) + strlen(rest) + strlen(JSONPATT_CYCLE) + 1));
+    sprintf(str, JSONPATT_CYCLE, subexp, rest);
     free(rest);
     free(subexp);
     return str;
   default:
-    sprintf(str, "\nError: token is not an expression!\n");
-    return str;
+    //sprintf(str, "\nError: token is not an expression!\n");
+    //return str;
+    return MAKE_JSON_ERROR("Token is not an expression.");
   }
 }
 
@@ -751,9 +762,9 @@ char* errorToJson(const Error* error)
   char* line = intToJson(error->line);
   char* str = (char*) malloc(sizeof(char) * (strlen(error->message) + strlen(line) + 2*ENOUGH));
   if (error->type == LEXER) {
-      sprintf(str, "{\n  'error': \"%s\",\n  'source': \"lexer\",\n  'line': %s\n}", error->message, line);
+      sprintf(str, "{\n  \"type\": \"error\",\n  \"source\": \"lexer\",\n  \"line\": %s\n  \"msg\": \"%s\"\n}", line, error->message);
   } else {
-      sprintf(str, "{\n  'error': \"%s\",\n  'source': \"parser\",\n  'line': %s\n}", error->message, line);
+      sprintf(str, "{\n  \"type\": \"error\",\n  \"source\": \"parser\",\n  \"line\": %s\n  \"msg\": \"%s\"\n}", line, error->message);
   }
 
   free(line);
