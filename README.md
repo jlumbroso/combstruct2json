@@ -20,7 +20,7 @@ v  = Atom
 would then produce the following JSON output:
 
 ```bash
-$ make
+$ make all
 $ ./combstruct2json tests/cographs
 { "G": { "type": "op", "op": "Set", "param": [{ "type": "id", "id": "Co" }] }, "Co": { "type": "op", "op": "Union", "param": [ { "type": "id", "id": "Ge" }, { "type": "id", "id":"Gc" }, { "type": "id", "id": "v" }, { "type": "op", "op": "Prod", "param": [ { "type": "id", "id": "v" }, { "type": "id", "id": "v" } ] } ] }, "Ge": { "type": "op", "op": "Union", "param": [ { "type": "op", "op": "Set", "param": [{ "type": "id", "id": "Sc" }], "restriction": "card = 2" }, { "type": "op", "op": "Prod", "param": [ { "type": "id", "id": "Sc" }, { "type": "id", "id": "v" } ] } ] }, "Gc": { "type": "op", "op": "Set", "param": [{ "type": "op", "op": "Union", "param": [ { "type": "id", "id": "v" }, { "type": "id", "id":"Sc" } ] }], "restriction": "card >= 3" }, "Sc": { "type": "op", "op": "Set", "param": [{ "type": "op", "op": "Union", "param": [ { "type": "id", "id": "v" }, { "type": "id", "id": "C" } ] }], "restriction": "card >= 2" }, "C": { "type": "op", "op": "Set", "param": [{ "type": "op", "op": "Union", "param": [ { "type": "id", "id": "v" }, { "type": "id", "id": "Sc" } ] }], "restriction": "card >= 2" }, "v": { "type": "unit", "unit": "Atom" }}
 ```
@@ -46,7 +46,8 @@ $ ./combstruct2json tests/cographs | python -m json.tool | head
 
 1. You may need to install `flex` and `bison`, if you don't already have them.
 
-2. Run `make all` to create the executable `combstruct2json`.
+2. Run `make all` to create both the executable `combstruct2json` and the static
+   library.
 
 3. Run `./combstruct2json <filename>` to print the parsed JSON output, from the
    grammar contained in the given file.

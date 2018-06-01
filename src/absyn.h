@@ -1,6 +1,5 @@
-#ifndef ABSYN_H
-#define ABSYN_H
-
+#ifndef ABSYNTYPES
+#define ABSYNTYPES
 #include "node.h"
 
 /*
@@ -130,6 +129,10 @@ struct Grammar_s
   char* (*toString)(const struct Grammar_s* self);
   char* (*toJson)(const struct Grammar_s* self);
 };
+#endif
+
+#ifndef ABSYN_H
+#define ABSYN_H
 
 /********************************** Constructors **********************************/
 

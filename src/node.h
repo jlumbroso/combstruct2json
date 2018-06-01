@@ -1,12 +1,14 @@
-#ifndef NODE_H
-#define NODE_H
-
+#ifndef NODESTTYPE
+#define NODESTTYPE
 typedef long long int key_t;
 
 typedef struct NodeST_s NodeST;
 
 typedef enum {UNIT_N, ID_N, EXP_N, EXPLIST_N, STMT_N, STMTLIST_N, ERROR_N, GRAMMAR_N} NodeType;
+#endif
 
+#ifndef NODE_H
+#define NODE_H
 /********************************** Constructors **********************************/
 
 /*
