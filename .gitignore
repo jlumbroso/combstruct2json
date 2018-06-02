@@ -11,6 +11,8 @@ parser.tab.h
 readgrammar
 combstruct2json
 exec
+jsonOutput
+example
 
 # macOS metadata
 .DS_Store
