@@ -13,4 +13,5 @@ This folder contains very simple test cases meant to check whether the error rep
 
 We also have certain standard specification to use as examples:
 
-- `cographs` is a symbolic grammar describing cographs, following the split decomposition framework of Bahrani and Lumbroso (2017).
+- `cographs` is a symbolic grammar describing cographs, following the split decomposition framework of Bahrani and Lumbroso (2017);
+- `reluctantQPW1` is the automatically generated half-plane walk grammar that is optimal for the random sampling of a reluctant quarter-plane walk, a walk of which the drift is very negative, following the work of Lumbroso, Mishna, Ponty (2016).
