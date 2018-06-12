@@ -16,7 +16,9 @@ jsonOutput
 example
 
 # Python metadata
-.pypirc
+dist/*
+*.egg-info/*
+MANIFEST
 
 # macOS metadata
 .DS_Store

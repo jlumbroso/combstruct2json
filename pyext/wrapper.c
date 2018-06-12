@@ -25,7 +25,7 @@ static PyMethodDef module_methods[] = {
 };
 
 /* Initialize the module */
-PyMODINIT_FUNC initcombstruct2json(void)
+void initcombstruct2json(void)
 {
     PyObject *m = Py_InitModule3("combstruct2json", module_methods, module_docstring);
     if (m == NULL)

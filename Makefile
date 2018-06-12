@@ -74,3 +74,4 @@ clean:
 	rm -f combstruct2json.h
 	rm -f combstruct2json libcombstruct2json.a
 	rm -Rf build combstruct2json.so
+	rm -Rf dist/* *.egg-info MANIFEST dist

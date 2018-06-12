@@ -1,6 +1,7 @@
 # coding=utf-8
 
-from distutils.core import setup, Extension
+#from distutils.core import Extension
+from setuptools import setup, Extension
 
 # Compile the wrapper by statically linking the library.
 c2j_ext_link = Extension("combstruct2json",
