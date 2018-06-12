@@ -29,7 +29,7 @@ combstruct2json.h: src/parser.y parser.tab.h src/absyn.h src/node.h
 	rm -f c2jh_yytokentype c2jh_nodesttype
 
 
-combstruct2json.o: combstruct2json.h libcombstruct2json.a pyext/wrapper.c setup.py setup.cfg
+combstruct2json.o: combstruct2json.h libcombstruct2json.a src/pywrapper.c setup.py setup.cfg
 	python setup.py build_ext --inplace
 
 

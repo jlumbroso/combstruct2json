@@ -1,0 +1,3 @@
+include combstruct2json.h
+include parser.tab.c parser.tab.h
+recursive-include src *.c *.h

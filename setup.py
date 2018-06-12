@@ -1,6 +1,5 @@
 # coding=utf-8
 
-#from distutils.core import Extension
 from setuptools import setup, Extension
 
 # Compile the wrapper by statically linking the library.
@@ -10,8 +9,9 @@ c2j_ext_link = Extension("combstruct2json",
 
 # Compile the wrapper by recompiling everything.
 c2j_ext = Extension("combstruct2json",
-                    ["pyext/wrapper.c", "parser.tab.c", "lex.yy.c",
+                    ["src/pywrapper.c", "parser.tab.c", "lex.yy.c",
                     "src/absyn.c", "src/node.c"],
+
                     extra_compile_args=[
                         "-Wno-strict-prototypes",
                         "-Wno-unused-function",
@@ -22,7 +22,7 @@ setup(
     include_dirs=["."],
 
     name="combstruct2json",
-    version="0.9",
+    version="0.95",
     description=("Lightweight library to parse combstruct grammars, and "
                  "standalone tool to convert them to JSON."),
 

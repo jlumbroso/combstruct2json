@@ -1,5 +1,5 @@
 #include <Python.h>
-#include "combstruct2json.h"
+#include "../combstruct2json.h"
 
 /*****************************************
  Adapted from:
