@@ -2,7 +2,7 @@
 
 from distutils.core import setup, Extension
 
-c2j_ext = Extension("combstruct2json",
+c2j_ext = Extension("combstruct.parser",
                     ["pyext/wrapper.c"],
                     extra_objects=["./libcombstruct2json.a"])
 
@@ -10,7 +10,7 @@ setup(
     ext_modules=[c2j_ext],
     include_dirs=["."],
 
-    name="combstruct2json",
+    name="combstruct.parser",
     version="0.9",
     description=("Lightweight library to parse combstruct grammars, and "
                  "standalone tool to convert them to JSON."),

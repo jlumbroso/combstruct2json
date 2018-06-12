@@ -1,8 +1,8 @@
 # combstruct2json
 
 Lightweight library to parse
-[`combstruct` grammars](https://www.maplesoft.com/support/help/maple/view.aspx?path=combstruct),
-and standalone tool to convert them to JSON.
+[`combstruct` grammars](https://www.maplesoft.com/support/help/maple/view.aspx?path=combstruct)
+both in C/C++ and Python, and standalone tool to convert them to JSON.
 
 ## Example
 
@@ -42,12 +42,22 @@ $ ./combstruct2json tests/cographs | python -m json.tool | head
                     ...
 ```
 
+If you build and install the Python wrapper, you may also read a grammar directly
+from a Python program:
+
+```python
+import combstruct2json
+d = combstruct2json.read_file("tests/cographs")
+print("Top-level symbols:")
+print(d.keys())
+```
+
 ## Installation
 
 1. You may need to install `flex` and `bison`, if you don't already have them.
 
-2. Run `make all` to create both the executable `combstruct2json` and the static
-   library.
+2. Run `make all` to create the executable `combstruct2json`, the static C/C++
+   library, and the Python wrapper library.
 
 3. Run `./combstruct2json <filename>` to print the parsed JSON output, from the
    grammar contained in the given file.
