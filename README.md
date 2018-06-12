@@ -54,6 +54,8 @@ print(d.keys())
 
 ## Installation
 
+You can build the project from scratch, if you have the necessary dependencies:
+
 1. You may need to install `flex` and `bison`, if you don't already have them.
 
 2. Run `make all` to create the executable `combstruct2json`, the static C/C++
@@ -61,6 +63,14 @@ print(d.keys())
 
 3. Run `./combstruct2json <filename>` to print the parsed JSON output, from the
    grammar contained in the given file.
+
+Alternatively, you may also install the Python library directly from PyPI
+(possibly in your user directory). This step will fetch the latest source after
+it has been processed by lexer/parser and so does not require they be installed:
+
+```bash
+$ pip install combstruct2json
+```
 
 ## Draft specification of JSON output
 
