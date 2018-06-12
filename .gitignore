@@ -8,11 +8,15 @@ parser.tab.h
 *~
 
 # Binary
+combstruct
 readgrammar
 combstruct2json
 exec
 jsonOutput
 example
+
+# Python metadata
+.pypirc
 
 # macOS metadata
 .DS_Store
