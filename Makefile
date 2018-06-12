@@ -69,3 +69,4 @@ clean:
 	rm -f c2jh_yytokentype c2jh_nodesttype c2jh_core
 	rm -f combstruct2json.h
 	rm -f combstruct2json libcombstruct2json.a
+	rm -Rf build combstruct2json.so
