@@ -52,6 +52,13 @@ print("Top-level symbols:")
 print(d.keys())
 ```
 
+which would print out:
+
+```text
+Top-level symbols:
+[u'C', u'Co', u'G', u'Ge', u'Gc', u'v', u'Sc']
+```
+
 ## Installation
 
 You can build the project from scratch, if you have the necessary dependencies:
