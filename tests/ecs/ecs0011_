@@ -1,0 +1,10 @@
+
+# ECS #11: Words with at most 3 consecutive b-letters
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000078
+
+S = Prod(X,Sequence(Prod(a,X))),
+X = Sequence(b,card <= 3),
+a = Atom,
+b = Atom

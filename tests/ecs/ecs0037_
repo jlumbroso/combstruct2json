@@ -1,0 +1,9 @@
+
+# ECS #37: Functional graphs
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001865
+
+K = Cycle(Tree),
+S = Set(K,card = 1),
+Tree = Prod(Z,Set(Tree))

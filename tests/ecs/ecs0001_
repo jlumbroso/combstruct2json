@@ -1,0 +1,8 @@
+
+# ECS #1: Alcohols or Unlabelled Non Plane Ternary Trees
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000598
+
+S = Union(Z,Prod(Z,Set(S,card = 3))),
+Z = Atom

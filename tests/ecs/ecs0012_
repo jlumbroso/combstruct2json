@@ -1,0 +1,10 @@
+
+# ECS #12: Words with at most 4 consecutive b-letters
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001591
+
+S = Prod(X,Sequence(Prod(a,X))),
+X = Sequence(b,card <= 4),
+a = Atom,
+b = Atom

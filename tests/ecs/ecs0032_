@@ -1,0 +1,7 @@
+
+# ECS #32: Cycles Set
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000399
+
+S = Set(Cycle(Z),card = 3)

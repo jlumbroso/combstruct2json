@@ -1,0 +1,7 @@
+
+# ECS #43: Non plane rooted binary trees
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001190
+
+S = Union(Z,Set(S,card = 2))

@@ -1,0 +1,7 @@
+
+# ECS #24: Cycles set
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001470
+
+S = Set(Union(Cycle(Z,card = 1),Cycle(Z,card = 3)))

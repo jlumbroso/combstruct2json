@@ -1,0 +1,8 @@
+
+# ECS #50: Unary-binary trees
+# Last updated: 2018-06-13
+# References:
+#    Motzkin
+#    OEIS A001006
+
+S = Prod(Z,Sequence(S,card <= 2))

@@ -1,0 +1,10 @@
+
+# ECS #3: Necklaces of 3 colours
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001867
+
+S = Cycle(Union(c1,c2,c3)),
+c1 = Atom,
+c2 = Atom,
+c3 = Atom

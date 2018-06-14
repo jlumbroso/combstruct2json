@@ -1,0 +1,9 @@
+
+# ECS #48: (-9*n^4-45*n^3-63*n^2-27*n)*f(n)+(8*n+28)*f(n+3)
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000108
+#    http://mathworld.wolfram.com/CatalanNumber.html
+#    http://forum.swarthmore.edu/advanced/robertd/catalan.html
+
+S = Prod(Z,Sequence(S))

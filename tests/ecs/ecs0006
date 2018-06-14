@@ -1,0 +1,9 @@
+
+# ECS #6: Words
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000079
+
+S = Sequence(Union(a,b)),
+a = Atom,
+b = Atom

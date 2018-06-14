@@ -1,0 +1,8 @@
+
+# ECS #39: Trees
+# Last updated: 2018-06-13
+# References:
+#    OEIS A052506
+
+S = Set(Tree),
+Tree = Prod(Z,Set(Z,1 <= card))

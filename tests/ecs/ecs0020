@@ -1,0 +1,9 @@
+
+# ECS #20: Permutations
+# Last updated: 2018-06-13
+# References:
+#    Euler, 1741
+#    Stirling, 1730
+#    OEIS A000142
+
+S = Set(Cycle(Z))

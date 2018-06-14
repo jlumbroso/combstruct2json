@@ -1,0 +1,11 @@
+
+# ECS #4: Necklaces of 4 colours
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001868
+
+S = Cycle(Union(c1,c2,c3,c4)),
+c1 = Atom,
+c2 = Atom,
+c3 = Atom,
+c4 = Atom

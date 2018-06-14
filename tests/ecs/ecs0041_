@@ -1,0 +1,7 @@
+
+# ECS #41: Ordered set partitions, Balls and Urns
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000670
+
+S = Sequence(Set(Z,1 <= card))

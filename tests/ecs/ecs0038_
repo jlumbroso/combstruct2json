@@ -1,0 +1,8 @@
+
+# ECS #38: Labelled 3-constrained functional graphs
+# Last updated: 2018-06-13
+# References:
+#    OEIS A052505
+
+S = Set(Cycle(Prod(Z,Set(g,card = 2)))),
+g = Union(Z,Prod(Z,Set(g,card = 3)))

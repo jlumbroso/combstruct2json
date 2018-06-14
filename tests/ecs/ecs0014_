@@ -1,0 +1,10 @@
+
+# ECS #14: Words with at least 2 consecutive b-letters
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000930
+
+S = Prod(X,Sequence(Prod(a,X))),
+X = Sequence(b,2 <= card),
+a = Atom,
+b = Atom

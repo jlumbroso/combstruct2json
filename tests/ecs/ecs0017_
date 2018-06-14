@@ -1,0 +1,7 @@
+
+# ECS #17: Set partitions
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000085
+
+S = Set(Union(Set(Z,card = 1),Set(Z,card = 2)))

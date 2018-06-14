@@ -1,0 +1,7 @@
+
+# ECS #35: Arrangements
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000522
+
+S = Prod(Sequence(Z),Set(Z))

@@ -1,0 +1,7 @@
+
+# ECS #30: Cycles Set
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001563
+
+S = Set(Cycle(Z),2 <= card)

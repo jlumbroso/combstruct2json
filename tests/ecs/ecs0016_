@@ -1,0 +1,7 @@
+
+# ECS #16: Set partitions
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000296
+
+S = Set(Set(Z,2 <= card))

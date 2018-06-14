@@ -1,0 +1,7 @@
+
+# ECS #40: Sets of segments
+# Last updated: 2018-06-13
+# References:
+#    true
+
+S = Set(Prod(Z,Sequence(Z)))

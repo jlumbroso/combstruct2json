@@ -1,0 +1,11 @@
+
+# ECS #8: Words
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000302
+
+S = Sequence(Union(a,b,c,d)),
+a = Atom,
+b = Atom,
+c = Atom,
+d = Atom

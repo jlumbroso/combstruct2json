@@ -1,0 +1,7 @@
+
+# ECS #45: Unlabelled Non Plane Binary Trees
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001190
+
+S = Union(Z,Prod(Z,Set(S,card = 2)))

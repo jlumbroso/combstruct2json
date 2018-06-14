@@ -1,0 +1,7 @@
+
+# ECS #47: Labelled Non Plane Ternary Trees
+# Last updated: 2018-06-13
+# References:
+#    OEIS A036771
+
+S = Union(Z,Prod(Z,Set(S,card = 3)))

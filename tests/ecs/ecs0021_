@@ -1,0 +1,7 @@
+
+# ECS #21: derangements
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000166
+
+S = Set(Cycle(Z,2 <= card))

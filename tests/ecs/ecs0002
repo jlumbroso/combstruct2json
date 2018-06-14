@@ -1,0 +1,10 @@
+
+# ECS #2: Necklaces of 2 colours
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000031
+#    http://sue.csc.uvic.ca/~cos/inf/neck/NecklaceInfo.html
+
+S = Cycle(Union(c1,c2)),
+c1 = Atom,
+c2 = Atom

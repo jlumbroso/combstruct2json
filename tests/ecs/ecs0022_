@@ -1,0 +1,7 @@
+
+# ECS #22: involutions
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000085
+
+S = Set(Cycle(Z,card <= 2))

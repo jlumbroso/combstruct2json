@@ -1,0 +1,8 @@
+
+# ECS #23: involutions
+# Last updated: 2018-06-13
+# References:
+#    even number
+#    OEIS A001147
+
+S = Set(Cycle(Z,card = 2))

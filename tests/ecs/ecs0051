@@ -1,0 +1,7 @@
+
+# ECS #51: Labelled Plane Binary Trees
+# Last updated: 2018-06-13
+# References:
+#    1
+
+S = Union(Z,Prod(S,S))

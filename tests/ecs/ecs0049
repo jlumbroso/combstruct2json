@@ -1,0 +1,7 @@
+
+# ECS #49: Labelled Plane General Trees
+# Last updated: 2018-06-13
+# References:
+#    OEIS A000808
+
+S = Prod(Z,Sequence(S))

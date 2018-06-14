@@ -1,0 +1,7 @@
+
+# ECS #34: Cycles of cycles
+# Last updated: 2018-06-13
+# References:
+#    OEIS A003713
+
+S = Cycle(Cycle(Z))

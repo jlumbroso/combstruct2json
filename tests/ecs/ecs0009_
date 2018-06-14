@@ -1,0 +1,12 @@
+
+# ECS #9: Words with at most 1 consecutive b-letters
+# Last updated: 2018-06-13
+# References:
+#    Fibonacci
+#    OEIS A000045
+#    http://www.ee.surrey.ac.uk/Personal/R.Knott/Fibonacci/fib.html
+
+S = Prod(X,Sequence(Prod(a,X))),
+X = Sequence(b,card <= 1),
+a = Atom,
+b = Atom

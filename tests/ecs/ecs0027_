@@ -1,0 +1,7 @@
+
+# ECS #27: Cycles set without fixed point
+# Last updated: 2018-06-13
+# References:
+#    OEIS A052502
+
+S = Set(Union(Cycle(Z,card = 3)))

@@ -1,0 +1,7 @@
+
+# ECS #42: Schroeder's problem
+# Last updated: 2018-06-13
+# References:
+#    OEIS A001003
+
+S = Union(Z,Sequence(S,2 <= card))
