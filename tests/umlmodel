@@ -1,0 +1,52 @@
+/*
+ * Adapted from:
+ *
+ * Mougenot, Darrasse, Blanc and Soria,
+ * "Uniform random generation of huge metamodel instances"
+ * (2009).
+ *
+ * NOTE: Can currently not express "coefficients" (except by
+ * repeating the combinatorial construct an integer number
+ * of times).
+ *
+ */
+
+
+// C1: package_uml
+C1 = Prod(Atom, Sequence(C2)),
+
+// C2: packageableElement
+C2 = Union(C1, Union(C3, C6)),
+
+// C3: class_uml
+C3 = Prod(Atom, Prod(Sequence(C5), Prod(Sequence(C12), Sequence(C4)))),
+
+// C4: generalization
+C4 = Atom,
+
+// C5: property
+C5 = Prod(Atom, Union(Union(Epsilon, C7), Union(Union(Epsilon, C7), Union(Union(Epsilon, C7))))),
+
+// C6: association
+C6 = Atom,
+
+// C7: valueSpecification
+C7 = Union(C8, Union(C9, Union(C10, C11))),
+
+// C8: literalBoolean
+C8 = Atom,
+
+// C9: literalNull
+C9 = Atom,
+
+// C10: literalInteger
+C10 = Atom,
+
+// C11: literalString
+C11 = Atom,
+
+// C12: operation
+C12 = Prod(Atom, Union(Sequence(C13), Sequence(C13)  )),
+
+// C13: parameter
+C13 = Prod(Atom, Union(Union(Epsilon, C7), Union(Union(Epsilon, C7), Union(Epsilon, C7))))
