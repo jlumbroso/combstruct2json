@@ -48,6 +48,7 @@ NUMBER	[0-9]+
 <C_COMMENT>"\n"   	        { /* empty */ }
 <C_COMMENT>.    	        { /* empty */ }
 "//"				{ BEGIN(LINE_COMMENT); }
+"#"					{ BEGIN(LINE_COMMENT); }
 <LINE_COMMENT>"\n"	        { BEGIN(INITIAL); }
 <LINE_COMMENT>.		        { /* empty */ }
 .          			{ reportError(newError(lineNumber, yytext, LEXER)); }

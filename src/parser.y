@@ -66,7 +66,8 @@ statement_list:		                  statement { $$ = newStatementList($1); }
 		 			| statement_list COMMA statement { $$ = addStatementToList($3, $1); }
 ;
 
-statement:			          ID EQ expression { $$ = newStatement($1, $3); }	
+statement:			          ID EQ expression { $$ = newStatement($1, $3); }
+					| Z EQ expression { $$ = newStatement(newId("Z"), $3); }
 ;
 
 expression_list: 	                  expression { $$ = newExpressionList($1); }
