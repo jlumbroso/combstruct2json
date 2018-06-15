@@ -151,7 +151,7 @@ could not be included in this repository because it exceeds GitHub's limits):
 
 ```bash
 $ awk 'flag { print } /^$/ { flag = 1 }' tests/reluctantQPW2_ | wc -l
-    5093 ./tests/reluctantQPW2_
+    5093
 
 $ time ./combstruct2json tests/reluctantQPW2_  > /dev/null
 real	6m7.458s
