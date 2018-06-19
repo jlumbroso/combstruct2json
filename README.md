@@ -4,7 +4,7 @@ This project provides:
 1. A highly optimized, extensible, lightweight linkable library to parse
 [`combstruct` grammars](https://www.maplesoft.com/support/help/maple/view.aspx?path=combstruct),
 implemented in C/C++.
-2. An independently available Python wrapper that outputs a `dict` according to the JSON specificaiton below.
+2. An independently available Python wrapper that, given a grammar file, outputs a `dict` according to the JSON specification below.
 3. A standalone commandline utility that can be piped to other tools (or called as an external system command from a host language such a Ruby, or JavaScript).
 
 The folder `examples` contains usage examples for the linkable library, the folder `tests` contains sample grammars that can be parsed.
