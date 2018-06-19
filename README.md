@@ -1,8 +1,15 @@
 # combstruct2json
 
-Lightweight library to parse
-[`combstruct` grammars](https://www.maplesoft.com/support/help/maple/view.aspx?path=combstruct)
-both in C/C++ and Python, and standalone tool to convert them to JSON.
+This project provides:
+1. A highly optimized, extensible, lightweight linkable library to parse
+[`combstruct` grammars](https://www.maplesoft.com/support/help/maple/view.aspx?path=combstruct),
+implemented in C/C++.
+2. An independently available Python wrapper that outputs a `dict` according to the JSON specificaiton below.
+3. A standalone commandline utility that can be piped to other tools (or called as an external system command from a host language such a Ruby, or JavaScript).
+
+The folder `examples` contains usage examples for the linkable library, the folder `tests` contains sample grammars that can be parsed.
+
+This library is already used by projects, such as [boltzoc](https://github.com/jlumbroso/boltzoc), the fast Analytic Sampler Oracle in C.
 
 ## Example
 
